@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DefaultValues, FieldValues, SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
+import { DefaultValues, FieldValues, Path, SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 import { z, ZodType } from "zod";
 
 import { Button } from "@/components/ui/button"
@@ -17,7 +17,9 @@ import {
 import { Input } from "@/components/ui/input"
 import Link from "next/link";
 import path from "path";
-import { FIELD_NAMES } from "@/constants";
+import { FIELD_NAMES, FIELD_TYPES } from "@/constants";
+import ImageUpload from "./imageUpload";
+
 
 interface Props<T extends FieldValues> {
   schema: ZodType<T>;
@@ -33,6 +35,7 @@ const AuthForm = <T extends FieldValues>({
   onSubmit,
 }: Props<T>) => {
   const isSignIn = type === "SIGN_IN";
+  
     const form :  UseFormReturn<T> = useForm({
       resolver: zodResolver(schema),
       defaultValues: defaultValues as DefaultValues<T>,
@@ -58,24 +61,34 @@ const AuthForm = <T extends FieldValues>({
               <FormField
               key={field}
               control={form.control}
-              name={field as path<T>} 
+              name={field as Path<T>} 
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="capitalize">{FIELD_NAMES[field.name as keyof typeof FIELD_NAMES]}</FormLabel>
+                  <FormLabel className="capitalize">{FIELD_NAMES[field.name as keyof typeof FIELD_NAMES]}
+                  </FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" {...field} />
+                <FormControl>
+                  {field.name === 'universityCard' ? (
+                  <ImageUpload/>
+                  ) : (
+                    <Input 
+                    required 
+                    type= {
+                      FIELD_TYPES[field.name as keyof typeof FIELD_TYPES]
+                    } {...field} 
+                       className="form-input"
+                    />
+                    )}
+                  </FormControl>
                 </FormControl>
-                <FormDescription>
-                  This is your public display name.
-                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
             ))}
-
         
-      <Button type="submit">Submit</Button>
+      <Button type="submit" className="form-btn"> 
+        {isSignIn ? "Sign In" : "Sign Up"}</Button>
     </form>
   </Form>
 
