@@ -6,10 +6,16 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "placehold.co",
+        port: "",
       },
       {
         protocol: 'https',
         hostname: "m.media-amazon.com"
+      },
+      {
+        protocol: 'https',
+        hostname: "ik.imagekit.io",
+        port: "",
       }
    ],
  },
