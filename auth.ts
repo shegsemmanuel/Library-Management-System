@@ -1,5 +1,5 @@
 import NextAuth, { User } from "next-auth"; 
-import { compare } from "bcrypt";
+import { compare } from "bcryptjs";
 import  CredentialsProvider  from "next-auth/providers/credentials";
 import { db } from "./database/drizzle";
 import { users } from "./database/schema";
